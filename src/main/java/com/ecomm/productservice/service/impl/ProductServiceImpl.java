@@ -21,7 +21,8 @@ public class ProductServiceImpl implements ProductService{
 
 	private final ProductRepository productRepository;
 	
-	public void createProduct(ProductRequestDto productRequest) {
+	@Override
+	public void createProduct(ProductRequestDto productRequest,String traceId) {
 		Product product=Product.builder()
 				.name(productRequest.getName())
 				.description(productRequest.getDescription())
@@ -32,7 +33,8 @@ public class ProductServiceImpl implements ProductService{
 		
 	}
 
-	public List<ProductResponseDto> getAllProducts() {
+	@Override
+	public List<ProductResponseDto> getAllProducts(String traceId) {
 		List<Product> products= productRepository.findAll();
 		
 		//return products.stream().map(product -> mapToProductResponse(product)).toList();

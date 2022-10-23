@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,16 +27,16 @@ public class ProductController {
 	
 	@PostMapping 
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createProduct(@RequestBody ProductRequestDto productRequestDto) {
+	public void createProduct(@RequestBody ProductRequestDto productRequestDto,@RequestParam String traceId) {
 		
-		productService.createProduct(productRequestDto);
+		productService.createProduct(productRequestDto,traceId);
 		
 	}
 	
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<ProductResponseDto> getAllProducts(){
-		return productService.getAllProducts();
+	public List<ProductResponseDto> getAllProducts(@RequestParam String traceId){
+		return productService.getAllProducts(traceId);
 		
 	}
 	
