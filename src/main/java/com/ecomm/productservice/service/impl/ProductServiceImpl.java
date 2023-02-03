@@ -1,7 +1,11 @@
 package com.ecomm.productservice.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.ecomm.productservice.dto.ProductDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecomm.productservice.dto.ProductRequestDto;
@@ -9,41 +13,42 @@ import com.ecomm.productservice.dto.ProductResponseDto;
 import com.ecomm.productservice.model.Product;
 import com.ecomm.productservice.repository.ProductRepository;
 import com.ecomm.productservice.service.ProductService;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class ProductServiceImpl implements ProductService{
 
-	private final ProductRepository productRepository;
+	@Autowired
+	private ProductRepository productRepository;
+
+	@Autowired
+	private ObjectMapper objectMapper;
 	
 	@Override
-	public void createProduct(ProductRequestDto productRequest,String traceId) {
+	public ProductDto createProduct(ProductRequestDto productRequest,String traceId) {
 		Product product=Product.builder()
 				.name(productRequest.getName())
 				.description(productRequest.getDescription())
 				.price(productRequest.getPrice()).build();
-		
-		productRepository.save(product);
-		log.info("Product {} is saved",product.getId());
-		
+
+
+		Product newProduct=productRepository.save(product);
+		ProductDto newProductDto=objectMapper.convertValue(newProduct,ProductDto.class);
+
+		return newProductDto;
+
 	}
 
 	@Override
-	public List<ProductResponseDto> getAllProducts(String traceId) {
+	public List<ProductDto> getAllProducts(String traceId) {
 		List<Product> products= productRepository.findAll();
 		
 		//return products.stream().map(product -> mapToProductResponse(product)).toList();
-		return products.stream().map(this::mapToProductResponse).toList();
+		return products.stream().map(this::mapToProductResponse).collect(Collectors.toList());
 		
 	}
 	
-	private ProductResponseDto mapToProductResponse(Product product) {
-		return ProductResponseDto.builder()
+	private ProductDto mapToProductResponse(Product product) {
+		return ProductDto.builder()
 				.id(product.getId())
 				.name(product.getName())
 				.description(product.getDescription())
