@@ -3,7 +3,8 @@ package com.ecomm.productservice.controller;
 import java.util.List;
 
 
-import com.ecomm.ecommlib.dto.ECommReponse;
+import com.ecomm.ecommlib.dto.ECommResponse;
+import com.ecomm.ecommlib.exception.ECommException;
 import com.ecomm.productservice.dto.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,8 @@ import com.ecomm.productservice.service.impl.ProductServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("api/product")
 @RequiredArgsConstructor
@@ -31,14 +34,11 @@ public class ProductController {
 	
 	@PostMapping 
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> createProduct(@RequestBody ProductRequestDto productRequestDto, @RequestParam String traceId) {
+	public ResponseEntity<?> createProduct(@Valid @RequestBody ProductRequestDto productRequestDto, @RequestParam String traceId) throws ECommException {
 		
 		ProductDto productDto=productService.createProduct(productRequestDto,traceId);
 
-		return new ResponseEntity<>(new ECommReponse("Product Successfully Saved",productDto),HttpStatus.CREATED);
-
-		//return new ResponseEntity<>(String.format("Product %s Successfully Saved",productDto.getName()),HttpStatus.CREATED);
-
+		return new ResponseEntity<>(new ECommResponse(HttpStatus.CREATED.value(),"Product Successfully Saved",productDto),HttpStatus.CREATED);
 	}
 	
 	@GetMapping

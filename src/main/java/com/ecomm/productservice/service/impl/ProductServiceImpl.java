@@ -3,6 +3,7 @@ package com.ecomm.productservice.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ecomm.ecommlib.exception.ECommException;
 import com.ecomm.productservice.dto.ProductDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ProductServiceImpl implements ProductService{
 	private ObjectMapper objectMapper;
 	
 	@Override
-	public ProductDto createProduct(ProductRequestDto productRequest,String traceId) {
+	public ProductDto createProduct(ProductRequestDto productRequest,String traceId) throws ECommException {
 		Product product=Product.builder()
 				.name(productRequest.getName())
 				.description(productRequest.getDescription())
