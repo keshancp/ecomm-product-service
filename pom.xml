@@ -12,7 +12,7 @@
 	<groupId>com.ecomm</groupId>
 	<artifactId>ecomm-product-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ecomm-service</name>
+	<name>ecomm-product-service</name>
 	<description>Ecommerce Cart Service App</description>
 	<properties>
 		<java.version>11</java.version>
@@ -77,13 +77,6 @@
 			<version>2.14.2</version>
 		</dependency>
 
-
-		<dependency>
-			<groupId>com.ecomm</groupId>
-			<artifactId>ecomm-lib</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
 
 
 	</dependencies>
